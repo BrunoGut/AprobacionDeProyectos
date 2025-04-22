@@ -10,7 +10,7 @@ namespace Domain.Entities
     public class ProjectApprovalStep
     {
         public BigInteger Id { get; set; }
-        public int StepOder {  get; set; }
+        public int StepOrder {  get; set; }
         public DateTime? DecisionDate { get; set; }
         public string? Observations { get; set; } 
 

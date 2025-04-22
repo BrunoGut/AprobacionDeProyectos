@@ -10,22 +10,18 @@ using System.Threading.Tasks;
 
 namespace Infraestructure.Query
 {
-    public class AreaQuery : IAreaQuery
+    public class ApprovalRuleQuery : IApprovalRuleQuery
     {
         private readonly AppDbContext _context;
-        public AreaQuery(AppDbContext context)
+
+        public ApprovalRuleQuery(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Area>> GetAllAsync()
+        public async Task<List<ApprovalRule>> GetAllAsync()
         {
-            return await _context.Areas.ToListAsync();
-        }
-
-        public async Task<Area> GetByIdAsync(int id)
-        {
-            return await _context.Areas.FirstOrDefaultAsync(a => a.Id == id);
+            return await _context.ApprovalRules.ToListAsync();
         }
     }
 }

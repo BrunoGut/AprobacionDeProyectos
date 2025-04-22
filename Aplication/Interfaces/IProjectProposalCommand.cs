@@ -9,6 +9,6 @@ namespace Aplication.Interfaces
 {
     public interface IProjectProposalCommand
     {
-        Task createAsync(ProjectProposal proposal);
+        Task<ProjectProposal> insertAsync(ProjectProposal projectProposal);
     }
 }

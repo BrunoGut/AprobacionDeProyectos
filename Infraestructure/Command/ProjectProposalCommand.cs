@@ -1,6 +1,8 @@
 ﻿using Aplication.Interfaces;
+using Aplication.Exceptions;
 using Domain.Entities;
 using Infraestructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +18,19 @@ namespace Infraestructure.Command
         {
             _context = context;
         }
-        public async Task createAsync(ProjectProposal proposal)
+
+        public async Task<ProjectProposal> insertAsync(ProjectProposal projectProposal)
         {
-            _context.ProjectProposals.Add(proposal);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.ProjectProposals.AddAsync(projectProposal);
+                await _context.SaveChangesAsync();
+                return projectProposal;
+            }
+            catch(DbUpdateException)
+            {
+                throw new ExceptionNotFound("No se pudo registrar la propuesta.");
+            }
         }
     }
 }

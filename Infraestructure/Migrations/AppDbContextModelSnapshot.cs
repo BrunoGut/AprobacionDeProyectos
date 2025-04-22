@@ -288,7 +288,7 @@ namespace Infraestructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("StepOder")
+                    b.Property<int>("StepOrder")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

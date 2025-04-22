@@ -1,32 +1,32 @@
-﻿using Infraestructure.Persistence;
-using Application.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Infraestructure.Persistence;
 using Infraestructure.Query;
-using Aplication.Services;
 using Infraestructure.Command;
-using PracticaAprobacionDeProyectos;
 using Aplication.Interfaces;
+using Aplication.Services;
+using PracticaAprobacionDeProyectos;
 
-var options = new DbContextOptionsBuilder<AppDbContext>()
-    .UseSqlServer("Server=DESKTOP-O1PN00U\\SQLEXPRESS;Database=AprobacionProyectosDB;Trusted_Connection=True;TrustServerCertificate=True;")
-    .Options;
+//var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+//optionsBuilder.UseSqlServer("Server=DESKTOP-O1PN00U\\SQLEXPRESS;Database=AprobacionProyectosDB;Trusted_Connection=True;TrustServerCertificate=True;");
 
-//inicializacion de dependencias
-AppDbContext dbContext = new AppDbContext(options);
+var context = new AppDbContext();
 
 //instancia de las queries
-IUserQuery userQuery = new UserQuery(dbContext);
-IAreaQuery areaQuery = new AreaQuery(dbContext);
-IProjectTypeQuery projectTypeQuery = new ProjectTypeQuery(dbContext);
+IUserQuery userQuery = new UserQuery(context);
+IAreaQuery areaQuery = new AreaQuery(context);
+IProjectTypeQuery projectTypeQuery = new ProjectTypeQuery(context);
+IApprovalRuleQuery ruleQuery = new ApprovalRuleQuery(context);
+IProjectProposalQuery proposalQuery = new ProjectProposalQuery(context);
+IApprovalRuleQuery approvalRuleQuery = new ApprovalRuleQuery(context);
 
 //instancia de los commands
-IProjectProposalCommand projectProposalCommand = new ProjectProposalCommand(dbContext);
-IProjectApprovalStepCommand projectApprovalStepCommand = new ProjectApprovalStepCommand(dbContext);
+IProjectProposalCommand projectProposalCommand = new ProjectProposalCommand(context);
+IProjectApprovalStepCommand projectApprovalStepCommand = new ProjectApprovalStepCommand(context);
 
 //instancia de los services
-IProjectProposalService projectProposalService = new ProjectProposalService(projectProposalCommand, userQuery, areaQuery, projectTypeQuery);
-IProjectApprovalStepService projectApprovalStepService = new ProjectApprovalStepService(projectApprovalStepCommand);
+IProjectProposalService projectProposalService = new ProjectProposalService(projectProposalCommand);
+IProjectApprovalStepService projectApprovalStepService = new ProjectApprovalStepService(ruleQuery, userQuery, projectApprovalStepCommand);
 
 //instancia del menu y ejecucion
-Menu menu = new Menu(projectProposalService, projectApprovalStepService);
-await menu.showMenu();
+Menu menu = new Menu(projectProposalService, projectApprovalStepService, userQuery, areaQuery, projectTypeQuery, proposalQuery);
+await menu.ShowLoginAsync();

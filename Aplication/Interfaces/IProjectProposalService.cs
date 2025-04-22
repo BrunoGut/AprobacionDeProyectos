@@ -1,5 +1,4 @@
-﻿using Aplication.Dtos;
-using Domain.Entities;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +9,7 @@ namespace Aplication.Interfaces
 {
     public interface IProjectProposalService
     {
-        Task CreateRequestAsync();
-        Task<List<User>> GetAllUsersAsync();
-        Task<List<Area>> GetAllAreasAsync();
-        Task<List<ProjectType>> GetAllTypesAsync();
+        Task<ProjectProposal> CreateWithAssignmentAsync(string title, string description, int areaId, int typeId, decimal amount, int duration, int createdBy);
+        //Task CreateWithAssignmentAsync(string title, string description, int areaId, int typeId, decimal amount, int duration, int userId);
     }
 }

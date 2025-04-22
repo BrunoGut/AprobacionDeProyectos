@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Aplication.Interfaces
 {
-    public interface IUserQuery
+    public interface IApprovalRuleQuery
     {
-        Task<List<User>> GetAllAsync();
-        Task<User> GetByIdAsync(int id);
+        Task<List<ApprovalRule>> GetAllAsync();
+
     }
 }

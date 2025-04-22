@@ -22,17 +22,13 @@ namespace Infraestructure.Persistence
         public DbSet<ProjectProposal> ProjectProposals { get; set; }
         public DbSet<ProjectApprovalStep> ProjectApprovalSteps { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-
-        }
+        
         
 
-        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=DESKTOP-O1PN00U\\SQLEXPRESS;Database=AprobacionProyectosDB;Trusted_Connection=True;TrustServerCertificate=True;");
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=DESKTOP-O1PN00U\\SQLEXPRESS;Database=AprobacionProyectosDB;Trusted_Connection=True;TrustServerCertificate=True;");
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -193,7 +189,7 @@ namespace Infraestructure.Persistence
                 entity.ToTable("ProjectApprovalStep");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).HasConversion(bigIntToStringConverter);
-                entity.Property(e => e.StepOder).IsRequired();
+                entity.Property(e => e.StepOrder).IsRequired();
                 entity.Property(e => e.DecisionDate);
                 entity.Property(e => e.Observations).HasColumnType("varchar(max)");
                 //relacion con ProjectProposal

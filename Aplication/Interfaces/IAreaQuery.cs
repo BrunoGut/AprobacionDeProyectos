@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces
+namespace Aplication.Interfaces
 {
     public interface IAreaQuery
     {
-        Task<List<Area>> GetAllAreas();
-        Task<Area?> GetById(int areaId);
+        Task<List<Area>> GetAllAsync();
+        Task<Area> GetByIdAsync(int id);
     }
 }

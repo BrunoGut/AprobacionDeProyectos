@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infraestructure.Migrations
 {
     /// <inheritdoc />
-    public partial class configuration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,7 +170,7 @@ namespace Infraestructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StepOder = table.Column<int>(type: "int", nullable: false),
+                    StepOrder = table.Column<int>(type: "int", nullable: false),
                     DecisionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Observations = table.Column<string>(type: "varchar(max)", nullable: true),
                     ProjectProposalId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),

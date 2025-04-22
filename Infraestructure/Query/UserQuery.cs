@@ -1,28 +1,31 @@
-﻿using Aplication.Interfaces;
-using Domain.Entities;
-using Infraestructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aplication.Interfaces;
+using Infraestructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Query
 {
     public class UserQuery : IUserQuery
     {
-        public readonly AppDbContext _context;
+        private readonly AppDbContext _context;
         public UserQuery(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<User>> GetAllUsers() =>
-            await _context.Users.ToListAsync();
-        public async Task<User?> GetById(int userId)
+        public async Task<List<User>> GetAllAsync()
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return await _context.Users.ToListAsync();
+        }
+
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

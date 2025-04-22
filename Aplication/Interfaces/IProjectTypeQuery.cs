@@ -9,7 +9,7 @@ namespace Aplication.Interfaces
 {
     public interface IProjectTypeQuery
     {
-        Task<List<ProjectType>> GetAllTypes();
-        Task<ProjectType?> GetById(int typeId);
+        Task<List<ProjectType>> GetAllAsync();
+        Task<ProjectType> GetByIdAsync(int id);
     }
 }

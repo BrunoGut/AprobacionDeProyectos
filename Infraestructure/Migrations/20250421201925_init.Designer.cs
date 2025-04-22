@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250418022213_configuration")]
-    partial class configuration
+    [Migration("20250421201925_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -291,7 +291,7 @@ namespace Infraestructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("StepOder")
+                    b.Property<int>("StepOrder")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

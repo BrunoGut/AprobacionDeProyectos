@@ -10,22 +10,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Query
 {
-    public class ProjectTypeQuery : IProjectTypeQuery
+    public class ProjectProposalQuery : IProjectProposalQuery
     {
         private readonly AppDbContext _context;
-        public ProjectTypeQuery(AppDbContext context)
+        public ProjectProposalQuery(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<List<ProjectType>> GetAllAsync()
+        public async Task<List<ProjectProposal>> GetAllAsync()
         {
-            return await _context.ProjectTypes.ToListAsync();
+            return await _context.ProjectProposals.ToListAsync();
         }
 
-        public async Task<ProjectType> GetByIdAsync(int id)
+        public async Task<ProjectProposal> GetByIdAsync(Guid id)
         {
-            return await _context.ProjectTypes.FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.ProjectProposals.FirstOrDefaultAsync(p => p.Id == id);
         }
     }
 }
