@@ -10,6 +10,8 @@ namespace Aplication.Interfaces
     public  interface IProjectApprovalStepCommand
     {
         Task SaveStepsAsync(List<ProjectApprovalStep> steps);
+        Task UpdateApprovalStepAsync(ProjectApprovalStep approvalStep);
+        Task UpdateProposalStatusAsync(ProjectProposal proposal);
 
     }
 }

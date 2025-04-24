@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Aplication.Interfaces;
 using Aplication.Services;
 using Aplication.Exceptions;
+using Aplication.Helpers;
+using System.Numerics;
+using Infraestructure.Query;
 
 namespace PracticaAprobacionDeProyectos
 {
@@ -18,8 +21,10 @@ namespace PracticaAprobacionDeProyectos
         private readonly IAreaQuery _areaQuery;
         private readonly IProjectTypeQuery _typeQuery;
         private readonly IProjectProposalQuery _proposalQuery;
+        private readonly IUserRoleService _userService;
+        private readonly IProjectApprovalStepQuery _projectApprovalStepQuery;
 
-        public Menu(IProjectProposalService proposalService, IProjectApprovalStepService stepService, IUserQuery userQuery, IAreaQuery areaQuery, IProjectTypeQuery typeQuery, IProjectProposalQuery proposalQuery)
+        public Menu(IProjectProposalService proposalService, IProjectApprovalStepService stepService, IUserQuery userQuery, IAreaQuery areaQuery, IProjectTypeQuery typeQuery, IProjectProposalQuery proposalQuery, IUserRoleService userService, IProjectApprovalStepQuery projectApprovalStepQuery)
         {
             _proposalService = proposalService;
             _stepService = stepService;
@@ -27,6 +32,8 @@ namespace PracticaAprobacionDeProyectos
             _areaQuery = areaQuery;
             _typeQuery = typeQuery;
             _proposalQuery = proposalQuery;
+            _userService = userService;
+            _projectApprovalStepQuery = projectApprovalStepQuery;
         }
 
         public async Task ShowLoginAsync()
@@ -90,7 +97,7 @@ namespace PracticaAprobacionDeProyectos
                         await CreateProposalAsync(userId);
                         break;
                     case "2":
-                        //implementar
+                        await ProposalPending(userId);
                         break;
                     case "3":
                         //implementar
@@ -184,6 +191,63 @@ namespace PracticaAprobacionDeProyectos
             Console.WriteLine("\nPresione una tecla para continuar.");
             Console.ReadKey();
         }
+
+        private readonly IProjectApprovalStepService _approvalService;
+
+        private async Task ProposalPending(int userId) //role=approverroleid and status = 1
+        {
+            Console.Clear();
+            Console.WriteLine("----- APROBAR / RECHAZAR / OBSERVAR PROYECTO -----");
+
+            var role = await _userService.GetRoleByIdAsync(userId); //rol de un usuario
+            var pasosPendientes = await _projectApprovalStepQuery.GetStepsByRoleAndStatusAsync(role, 1); // pasos de un rol donde status = 1 = pendiente
+
+            if (pasosPendientes == null || !pasosPendientes.Any())
+            {
+                Console.WriteLine("No tiene propuestas para aprobar, rechazar o observar.");
+                Console.WriteLine("\nPresione una tecla para continuar.");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("\nPropuestas pendientes:");
+            foreach (var paso in pasosPendientes)
+            {
+                Console.WriteLine($"ID: {paso.ProjectProposalId} - Título: {paso.ProjectProposal?.Title}"); //muestra todos esos pasos
+            }
+
+            Console.Write("\nIngrese el ID de la propuesta que desea procesar: ");
+            var input = Console.ReadLine();
+
+            if (!Guid.TryParse(input, out Guid propuestaId))
+            {
+                Console.WriteLine("ID inválido.");
+                Console.WriteLine("\nPresione una tecla para continuar.");
+                Console.ReadKey();
+                return;
+            }
+
+            // Acá pedimos la decisión del usuario
+            Console.Write("Ingrese una opción (A = Aprobar, R = Rechazar, O = Observar): ");
+            char decision = char.ToUpper(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+
+            if (decision != 'A' && decision != 'R' && decision != 'O')
+            {
+                Console.WriteLine("Opción inválida.");
+                Console.WriteLine("\nPresione una tecla para continuar.");
+                Console.ReadKey();
+                return;
+            }
+
+            // Acá llamás al método que procese la aprobación/rechazo/observación
+            await _stepService.ProcessProposalStepAsync(propuestaId, userId, decision);
+
+            Console.WriteLine("\nProceso finalizado.");
+            Console.WriteLine("\nPresione una tecla para continuar.");
+            Console.ReadKey();
+        }
+
 
     }
 

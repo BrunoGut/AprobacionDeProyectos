@@ -95,7 +95,7 @@ namespace Infraestructure.Migrations
                             Id = "5",
                             ApproverRoleId = 2,
                             Area = 1,
-                            MaxAmount = 20000m,
+                            MaxAmount = 0m,
                             MinAmount = 5000m,
                             StepOrder = 2,
                             Type = 1

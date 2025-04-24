@@ -27,5 +27,13 @@ namespace Infraestructure.Query
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
+
+        public async Task<int> GetRoleByIdAsync(int id)
+        {
+            return await _context.Users
+                .Where(u => u.Id == id)
+                .Select(u => u.Role)
+                .FirstOrDefaultAsync();
+        }
     }
 }

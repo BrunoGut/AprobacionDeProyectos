@@ -7,11 +7,8 @@ using System.Threading.Tasks;
 
 namespace Aplication.Interfaces
 {
-    public interface IUserQuery
+    public interface IUserRoleCommand
     {
-        Task<List<User>> GetAllAsync();
-        Task<User> GetByIdAsync(int id);
-
-        Task<int> GetRoleByIdAsync(int id);
+        Task<User> GetByIdAsync(int userId);
     }
 }
